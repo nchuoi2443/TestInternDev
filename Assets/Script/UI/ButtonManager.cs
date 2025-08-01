@@ -5,6 +5,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private ButtonController _resetBtn;
     [SerializeField] private ButtonController _autoKickBtn;
     [SerializeField] private ButtonController _kickBtn;
+    [SerializeField] private ButtonController _quitGameBtn;
     private BallManager _ballManager;
 
     private void Awake()
@@ -13,6 +14,7 @@ public class ButtonManager : MonoBehaviour
         _resetBtn.Init(OnResetClicked);
         _autoKickBtn.Init(OnAutoKickClicked);
         _kickBtn.Init(OnKickClicked);
+        _quitGameBtn.Init(QuitGame);
     }
 
     private void Start()
@@ -49,5 +51,14 @@ public class ButtonManager : MonoBehaviour
     private void OnKickClicked()
     {
         GameEvents.OnKick?.Invoke(_ballManager.CurrentNearestBall);
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
     }
 }
